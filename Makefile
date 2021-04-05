@@ -10,5 +10,8 @@ test:
 test-local:
 	./vendor/bin/phpunit tests --testdox
 
+codecov-local:
+	./vendor/bin/phpunit --coverage-clover coverage.xml
+
 docs:
 	docker run --rm -v ${PWD}:/data phpdoc/phpdoc:3 run -d src -t phpdoc
