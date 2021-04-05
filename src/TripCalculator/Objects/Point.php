@@ -3,8 +3,6 @@
 namespace Trip\Calculator\Objects;
 
 
-use Decimal\Decimal;
-
 class Point
 {
 

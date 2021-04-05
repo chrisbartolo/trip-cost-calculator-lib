@@ -4,8 +4,8 @@ namespace Trip\Calculator\Services;
 
 
 use Trip\Calculator\Interfaces\GeoService;
-use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Point;
+use Trip\Calculator\Objects\Trip;
 
 class GoogleMaps implements GeoService
 {

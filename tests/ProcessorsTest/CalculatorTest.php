@@ -8,6 +8,13 @@ use Trip\Tests\SetupAbstract;
 class CalculatorTest extends SetupAbstract
 {
 
+    public function testMinutesFormat()
+    {
+        $timeInSeconds = 360;
+        $timeResult = $this->calculator->minutesFormat($timeInSeconds);
+        $this->assertEquals("06:00", $timeResult);
+    }
+
     public function calculateDriverCost()
     {
         return ($this->driverHourlyRate/60) * $this->travelTimeMinutes;

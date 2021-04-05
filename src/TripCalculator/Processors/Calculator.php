@@ -61,8 +61,15 @@ class Calculator
     public function calculateCost(): float
     {
         $driverCost = $this->calculateDriverCost($this->driver->hourlyRate, $this->trip->travelTimeMinutes);
-        $fuelCost = $this->calculateFuelCost($this->trip->fuelCostLitre, $this->trip->travelledKilometers, $this->vehicle->fuelLitrePerHundred);
-        $vehicleWearTearCost = $this->calculateVehicleWearTearCost($this->vehicle->wearTearHourly, $this->trip->travelTimeMinutes);
+        $fuelCost = $this->calculateFuelCost(
+            $this->trip->fuelCostLitre,
+            $this->trip->travelledKilometers,
+            $this->vehicle->fuelLitrePerHundred
+        );
+        $vehicleWearTearCost = $this->calculateVehicleWearTearCost(
+            $this->vehicle->wearTearHourly,
+            $this->trip->travelTimeMinutes
+        );
 
         $totalCost = $driverCost + $fuelCost + $vehicleWearTearCost;
         return round($totalCost . "", 2);
@@ -71,19 +78,22 @@ class Calculator
     public function calculateDriverCost(Decimal $hourlyRate, int $travelTimeMinutes): Decimal
     {
         $driverCostMinutely = $hourlyRate / 60;
-        return new Decimal(($travelTimeMinutes * $driverCostMinutely)."");
+        return new Decimal(($travelTimeMinutes * $driverCostMinutely) . "");
     }
 
-    public function calculateFuelCost(Decimal $fuelCostPerLitre, int $travelledKilometers, int $litersPerHundred): Decimal
-    {
+    public function calculateFuelCost(
+        Decimal $fuelCostPerLitre,
+        int $travelledKilometers,
+        int $litersPerHundred
+    ): Decimal {
         $fuelCost = ($litersPerHundred / 100);
         $vehicleFuelLitreConsumed = new Decimal("" . ($travelledKilometers * $fuelCost));
-        return new Decimal(($vehicleFuelLitreConsumed * $fuelCostPerLitre)."");
+        return new Decimal(($vehicleFuelLitreConsumed * $fuelCostPerLitre) . "");
     }
 
     public function calculateVehicleWearTearCost(Decimal $wearTearHourly, int $travelTimeMinutes): Decimal
     {
-        return new Decimal(($travelTimeMinutes * ($wearTearHourly / 60))."");
+        return new Decimal(($travelTimeMinutes * ($wearTearHourly / 60)) . "");
     }
 
 }

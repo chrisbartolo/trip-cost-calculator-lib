@@ -4,7 +4,8 @@ namespace Trip\Calculator\Objects;
 
 use Decimal\Decimal;
 
-class Driver {
+class Driver
+{
 
     public string $name;
     public Decimal $hourlyRate;

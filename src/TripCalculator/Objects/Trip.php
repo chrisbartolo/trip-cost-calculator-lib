@@ -3,19 +3,17 @@
 namespace Trip\Calculator\Objects;
 
 use Decimal\Decimal;
-use Trip\Calculator\Objects\Point;
 
-class Trip {
+class Trip
+{
 
     public string $name;
 
     public Decimal $fuelCostLitre;
-
-    private array $points = [];
-
     public bool $calculated = false;
     public float $travelledKilometers = 0;
     public int $travelTimeMinutes = 0;
+    private array $points = [];
 
     public function addPoint(Point $point)
     {
@@ -35,8 +33,8 @@ class Trip {
     public function getPointsAsCoordinates(): array
     {
         $coordinates = [];
-        foreach($this->points as $point) {
-            /* @var $point \Trip\Calculator\Objects\Point */
+        foreach ($this->points as $point) {
+            /* @var $point Point */
             $coordinates[] = [$point->latitude, $point->longitude];
         }
 

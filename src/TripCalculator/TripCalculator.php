@@ -3,14 +3,11 @@
 namespace Trip\Calculator;
 
 
-use Decimal\Decimal;
 use Trip\Calculator\Interfaces\GeoService;
 use Trip\Calculator\Objects\Driver;
-use Trip\Calculator\Objects\Point;
 use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Vehicle;
 use Trip\Calculator\Processors\Calculator;
-use Trip\Calculator\Services\GoogleMaps;
 
 class TripCalculator
 {
@@ -33,9 +30,7 @@ class TripCalculator
         $this->calculator = new Calculator($this->geoService, $this->trip, $this->vehicle, $this->driver);
         $this->calculator->generate();
 
-        $result = $this->calculator->calculateCost();
-
-        return $result;
+        return $this->calculator->calculateCost();
     }
 
     public function getTrip()

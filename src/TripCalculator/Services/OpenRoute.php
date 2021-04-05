@@ -4,15 +4,14 @@ namespace Trip\Calculator\Services;
 
 use GuzzleHttp\Client;
 use Trip\Calculator\Interfaces\GeoService;
-use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Point;
+use Trip\Calculator\Objects\Trip;
 
 class OpenRoute implements GeoService
 {
-    private \GuzzleHttp\Client $guzzleClient;
-
     public int $travelledKilometers = 0;
     public int $travelTimeMinutes = 0;
+    private Client $guzzleClient;
 
     public function __construct($apiKey = null)
     {
@@ -32,7 +31,7 @@ class OpenRoute implements GeoService
     {
         $body = array();
         $body['coordinates'] = $trip->getPointsAsCoordinates();
-        $body['maximum_speed'] = (int) 80;
+        $body['maximum_speed'] = (int)80;
 
         $request = $this->guzzleClient->request(
             'POST',
