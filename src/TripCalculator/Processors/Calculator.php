@@ -4,6 +4,7 @@ namespace Trip\Calculator\Processors;
 
 use Decimal\Decimal;
 use Trip\Calculator\Interfaces\GeoService;
+use Trip\Calculator\Objects\Driver;
 use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Vehicle;
 
@@ -12,25 +13,39 @@ class Calculator
     private GeoService $geoService;
     private Trip $trip;
     private Vehicle $vehicle;
+    private Driver $driver;
 
-    public function __construct(GeoService $geoService, Trip $trip, Vehicle $vehicle)
+    public function __construct(GeoService $geoService, Trip $trip, Vehicle $vehicle, Driver $driver)
     {
         $this->geoService = $geoService;
         $this->trip = $trip;
         $this->vehicle = $vehicle;
+        $this->driver = $driver;
     }
 
     public function generate()
     {
         $result = $this->geoService->getDirections($this->trip);
-        $this->trip->distanceKilometers = $result->routes[0]->summary->distance;
-        $this->trip->travelTimeMinutes = $result->routes[0]->summary->duration;
+        $this->trip->distanceKilometers = $result->routes[0]->summary->distance / 1000;
+        $this->trip->travelTimeMinutes = $result->routes[0]->summary->duration / 60;
+
+        echo "Distance: " . $this->trip->distanceKilometers . "km \n";
+        echo "Duration: " . $this->minutesFormat($this->trip->travelTimeMinutes, '%02d Hours, %02d Minutes') . " \n";
+    }
+
+    function minutesFormat($time, $format = '%02d:%02d')
+    {
+        if ($time < 1) {
+            return;
+        }
+        $hours = floor($time / 60);
+        $minutes = ($time % 60);
+        return sprintf($format, $hours, $minutes);
     }
 
     public function getDistance(): float
     {
-        if($this->trip->distanceKilometers = 0)
-        {
+        if ($this->trip->distanceKilometers = 0) {
             //TODO: Fetch distance from API
         }
 
@@ -39,8 +54,7 @@ class Calculator
 
     public function getTravellingTime(): int
     {
-        if($this->trip->travelTimeMinutes = 0)
-        {
+        if ($this->trip->travelTimeMinutes = 0) {
             //TODO: Fetch time from API
         }
 
@@ -49,16 +63,30 @@ class Calculator
 
     public function calculateCost(): float
     {
-        $driverCostMinutely = $this->trip->driverHourly / 60;
-        $driverCost = $this->trip->travelTimeMinutes * $driverCostMinutely;
+        $driverCost = $this->calculateDriverCost($this->driver->hourlyRate, $this->trip->travelTimeMinutes);
+        $fuelCost = $this->calculateFuelCost($this->trip->fuelCostLitre, $this->trip->travelTimeMinutes, $this->vehicle->fuelLitrePerHundred);
+        $vehicleWearTearCost = $this->calculateVehicleWearTearCost($this->vehicle->wearTearHourly, $this->trip->travelTimeMinutes);
 
-        $vehicleFuelLitreConsumed = $this->trip->distanceKilometers * ($this->vehicle->fuelLitrePerHundred / 100);
-        $vehicleCost = $vehicleFuelLitreConsumed * $this->trip->fuelCostLitre;
+        $totalCost = $driverCost + $fuelCost + $vehicleWearTearCost;
+        return round($totalCost . "", 2);
+    }
 
-        $vehicleWearTearCost = $this->trip->travelTimeMinutes * ($this->vehicle->wearTearHourly / 60);
+    public function calculateDriverCost(Decimal $hourlyRate, int $travelTimeMinutes): Decimal
+    {
+        $driverCostMinutely = $hourlyRate / 60;
+        return new Decimal(($travelTimeMinutes * $driverCostMinutely)."");
+    }
 
-        $totalCost = $driverCost + $vehicleCost + $vehicleWearTearCost;
-        return round($totalCost, 2);
+    public function calculateFuelCost(Decimal $fuelCostPerLitre, int $travelledKilometers, int $litersPerHundred): Decimal
+    {
+        $fuelCost = ($litersPerHundred / 100);
+        $vehicleFuelLitreConsumed = new Decimal("" . ($travelledKilometers * $fuelCost));
+        return new Decimal(($vehicleFuelLitreConsumed * $fuelCostPerLitre)."");
+    }
+
+    public function calculateVehicleWearTearCost(Decimal $wearTearHourly, int $travelTimeMinutes): Decimal
+    {
+        return new Decimal(($travelTimeMinutes * ($wearTearHourly / 60))."");
     }
 
 }

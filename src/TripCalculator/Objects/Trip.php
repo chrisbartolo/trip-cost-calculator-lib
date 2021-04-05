@@ -10,7 +10,6 @@ class Trip {
     public string $name;
 
     public Decimal $fuelCostLitre;
-    public Decimal $driverHourly;
 
     private array $points = [];
 

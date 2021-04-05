@@ -5,6 +5,7 @@ namespace Trip\Calculator;
 
 use Decimal\Decimal;
 use Trip\Calculator\Interfaces\GeoService;
+use Trip\Calculator\Objects\Driver;
 use Trip\Calculator\Objects\Point;
 use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Vehicle;
@@ -17,29 +18,24 @@ class TripCalculator
     private Vehicle $vehicle;
     private Calculator $calculator;
     private GeoService $geoService;
+    private Driver $driver;
 
-    public function __construct(GeoService $geoService, Trip $trip, Vehicle $vehicle)
+    public function __construct(GeoService $geoService, Trip $trip, Vehicle $vehicle, Driver $driver)
     {
         $this->trip = $trip;
         $this->geoService = $geoService;
         $this->vehicle = $vehicle;
-    }
-
-    public function addTripPoint(Point $point)
-    {
-        $this->trip->addPoint($point);
+        $this->driver = $driver;
     }
 
     public function calculateTrip()
     {
-        $this->calculator = new Calculator($this->geoService, $this->trip, $this->vehicle);
+        $this->calculator = new Calculator($this->geoService, $this->trip, $this->vehicle, $this->driver);
         $this->calculator->generate();
-        //return $this->calculator->calculateCost();
-    }
 
-    public function setDriverHourly(Decimal $valueInEuro): void
-    {
-        $this->trip->driverHourly = $valueInEuro;
+        $result = $this->calculator->calculateCost();
+
+        return $result;
     }
 
     public function setFuelCostLitre(Decimal $valueInEuro): void

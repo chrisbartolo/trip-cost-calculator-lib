@@ -4,10 +4,9 @@ namespace Trip\Calculator\Objects;
 
 use Decimal\Decimal;
 
-class Vehicle {
+class Driver {
 
     public string $name;
-    public float $fuelLitrePerHundred;
-    public Decimal $wearTearHourly;
+    public Decimal $hourlyRate;
 
 }

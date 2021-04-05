@@ -30,13 +30,16 @@
   },
   "autoload": {
     "classmap": [
-      "src/"
+      "src/",
+      "tests/"
     ],
     "psr-4": {
       "Trip\\Calculator\\": "src/TripCalculator"
     },
     "autoload-dev": {
-      "psr-4": { "Trip\\Calculator\\Tests\\": "tests/" }
+      "psr-4": {
+        "Trip\\Tests\\": "tests/"
+      }
     }
   }
 }
