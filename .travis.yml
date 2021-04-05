@@ -28,12 +28,14 @@ install:
 script:
   - docker run $containername /bin/sh -c "make test-local"
   - docker run $containername /bin/sh -c "make codecov-local"
+    - docker run $containername /bin/sh -c "ls"
 
 #after_script:
 
 after_success:
   # Submit coverage report to https://codecov.io
   - ci_env=`bash <(curl -s https://codecov.io/env)`
+  - docker run $ci_env -e CI=true $containername /bin/bash -c "ls"
   - docker run $ci_env -e CI=true $containername /bin/bash -c "bash <(curl -s https://codecov.io/bash) -f /var/www/html/coverage.xml"
 
 #after_failure:
