@@ -33,7 +33,7 @@ script:
 
 after_success:
   # Submit coverage report to https://codecov.io
-  - docker run $containername /bin/sh -c "bash <(curl -s https://codecov.io/bash)"
+  - docker run $containername /bin/bash -c "bash <(curl -s https://codecov.io/bash)"
 
 #after_failure:
 
