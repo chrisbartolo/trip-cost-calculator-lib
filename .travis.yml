@@ -23,7 +23,6 @@ php:
 
 install:
   - docker run -d --name $containername $imagename
-  - docker exec -it $containername travis_retry composer install --no-interaction --no-suggest
 
 # Testing the app (see phpunit.xml) for configs, generating Code Coverage report
 script:
