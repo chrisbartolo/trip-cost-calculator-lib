@@ -26,13 +26,13 @@ install:
 
 # Testing the app (see phpunit.xml) for configs, generating Code Coverage report
 script:
-  - docker exec -it trip-cost-calculator composer test -- --coverage-clover=coverage.xml
+  - docker run $containername /bin/sh -c "composer test -- --coverage-clover=coverage.xml"
 
 #after_script:
 
 after_success:
   # Submit coverage report to https://codecov.io
-  - docker exec -it $containername bash <(curl -s https://codecov.io/bash)
+  - docker run $containername /bin/sh -c "<(curl -s https://codecov.io/bash)"
 
 #after_failure:
 
