@@ -28,14 +28,12 @@ install:
 script:
   - docker run -v "$PWD/shared:/shared" $containername /bin/sh -c "make test-local"
   - docker run -v "$PWD/shared:/shared" $containername /bin/sh -c "make codecov-local && mv coverage.xml /shared"
-  - docker run -v "$PWD/shared:/shared" $containername /bin/sh -c "ls"
 
 #after_script:
 
 after_success:
   # Submit coverage report to https://codecov.io
   - ci_env=`bash <(curl -s https://codecov.io/env)`
-  - docker run -v "$PWD/shared:/shared" $ci_env -e CI=true $containername /bin/bash -c "ls"
   - docker run -v "$PWD/shared:/shared" $ci_env -e CI=true $containername /bin/bash -c "bash <(curl -s https://codecov.io/bash) -f /shared/coverage.xml"
 
 #after_failure:
