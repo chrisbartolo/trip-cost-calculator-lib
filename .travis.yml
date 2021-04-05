@@ -6,7 +6,14 @@ services:
   - docker
 
 before_install:
-  - docker build -t trip-cost-calculator .
+  - docker build -t $imagename .
+
+before-script:
+env:
+  # global will stay the same across all matrix possibilities (will not create additional combinations to run)
+  global:
+    - imagename=trip-cost-calculator
+    - containername=trip-cost-calculator
 
 # Define the php versions against we want to test our code
 php:
@@ -15,7 +22,8 @@ php:
 # Note: Code coverage requires php-xDebug extension enabled on CI server
 
 install:
-  - docker exec -it trip-cost-calculator travis_retry composer install --no-interaction --no-suggest
+  - docker run -d --name $containername $imagename
+  - docker exec -it $containername travis_retry composer install --no-interaction --no-suggest
 
 # Testing the app (see phpunit.xml) for configs, generating Code Coverage report
 script:
@@ -25,7 +33,7 @@ script:
 
 after_success:
   # Submit coverage report to https://codecov.io
-  - docker exec -it trip-cost-calculator bash <(curl -s https://codecov.io/bash)
+  - docker exec -it $containername bash <(curl -s https://codecov.io/bash)
 
 #after_failure:
 
