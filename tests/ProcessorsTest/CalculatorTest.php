@@ -7,28 +7,55 @@ use Trip\Tests\SetupAbstract;
 
 class CalculatorTest extends SetupAbstract
 {
+
+    public function calculateDriverCost()
+    {
+        return ($this->driverHourlyRate/60) * $this->travelTimeMinutes;
+    }
+
     public function testCalculateDriverCost()
     {
-        $travelTimeMinutes = 60;
-        $expectedCost = $this->driverHourlyRate/60 * $travelTimeMinutes;
-        $result = $this->calculator->calculateDriverCost($this->driverHourlyRate, $travelTimeMinutes);
-        $this->assertEquals($expectedCost, $result);
+        $expected = $this->calculateDriverCost();
+        $result = $this->calculator->calculateDriverCost($this->driverHourlyRate, $this->travelTimeMinutes);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function calculateFuelCost()
+    {
+        return new Decimal(($this->fuelLitrePerHundred / 100)."") * new Decimal($this->travelledKilometers."") * $this->fuelCostLitre;
     }
 
     public function testCalculateFuelCost()
     {
-        $travelledKilometers = 100;
-        $expectedCost = new Decimal(($this->fuelLitrePerHundred / 100)."") * new Decimal($travelledKilometers."") * $this->fuelCostLitre;
-        $result = $this->calculator->calculateFuelCost($this->fuelCostLitre, $travelledKilometers, $this->fuelLitrePerHundred);
-        $this->assertEquals($expectedCost, $result);
+        $expected = $this->calculateFuelCost();
+        $result = $this->calculator->calculateFuelCost($this->fuelCostLitre, $this->travelledKilometers, $this->fuelLitrePerHundred);
+        $this->assertEquals($expected, $result);
+    }
+
+    public function calculateWearTearCost()
+    {
+        return new Decimal((($this->wearTearHourly / 60) * $this->travelTimeMinutes)."");
     }
 
     public function testCalculateWearTearCost()
     {
-        $travelTimeMinutes = 60;
-        $expectedCost = new Decimal((($this->wearTearHourly / 60) * $travelTimeMinutes)."");
-        $result = $this->calculator->calculateVehicleWearTearCost($this->wearTearHourly, $travelTimeMinutes);
-        $this->assertEquals($expectedCost, $result);
+        $expected = $this->calculateWearTearCost();
+        $result = $this->calculator->calculateVehicleWearTearCost($this->wearTearHourly, $this->travelTimeMinutes);
+        $this->assertEquals($expected, $result);
     }
 
+    public function calculateTotalCost()
+    {
+        return round(($this->calculateFuelCost() + $this->calculateDriverCost() + $this->calculateWearTearCost().""), 2);;
+    }
+
+    public function testCalculateTotalCost()
+    {
+        $this->tripCalculator->getTrip()->travelTimeMinutes = $this->travelTimeMinutes;
+        $this->tripCalculator->getTrip()->travelledKilometers = $this->travelledKilometers;
+
+        $expectedTotalCost = $this->calculateTotalCost();
+        $result = $this->calculator->calculateCost();
+        $this->assertEquals($expectedTotalCost, $result);
+    }
 }

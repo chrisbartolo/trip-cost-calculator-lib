@@ -13,6 +13,7 @@ use Trip\Calculator\Objects\Vehicle;
 use Trip\Calculator\Processors\Calculator;
 use Trip\Calculator\Services\OpenRoute;
 use Trip\Calculator\TripCalculator;
+use Trip\Tests\ServicesTest\Dumb;
 
 class SetupAbstract extends TestCase
 {
@@ -23,15 +24,12 @@ class SetupAbstract extends TestCase
     public int $fuelLitrePerHundred;
     public Decimal $fuelCostLitre;
     public Decimal $driverHourlyRate;
+    public int $travelTimeMinutes;
+    public int $travelledKilometers;
 
     public function setUp(): void
     {
-
-        $this->wearTearHourly = new Decimal("1.00");
-        $this->fuelLitrePerHundred = 9;
-        $this->fuelCostLitre = new Decimal("1.24");
-        $this->driverHourlyRate = new Decimal("10.00");
-
+        $this->setInitialValues();
 
         $builder = new ContainerBuilder();
         $builder->useAnnotations(true);
@@ -40,7 +38,8 @@ class SetupAbstract extends TestCase
         $builder->addDefinitions(
             [
                 'Trip\Calculator\Interfaces\GeoService' => function (ContainerInterface $c) {
-                    return new OpenRoute("5b3ce3597851110001cf624840bc876cfc964da3a77c9e1acf6bdcd6");
+                    //return $geoService = new OpenRoute("5b3ce3597851110001cf624840bc876cfc964da3a77c9e1acf6bdcd6");
+                    return $geoService = new Dumb("test");
                 },
                 'Trip\Calculator\Objects\Trip' => function (ContainerInterface $c) {
                     $trip = new Trip();
@@ -69,5 +68,20 @@ class SetupAbstract extends TestCase
         $this->tripCalculator = $container->get("Trip\Calculator\TripCalculator");
         $this->calculator = $container->get("Trip\Calculator\Processors\Calculator");
 
+    }
+
+    public function setInitialValues()
+    {
+        $this->wearTearHourly = new Decimal("1.00");
+        $this->fuelLitrePerHundred = 9;
+        $this->fuelCostLitre = new Decimal("1.24");
+        $this->driverHourlyRate = new Decimal("10.00");
+        $this->travelTimeMinutes = 60;
+        $this->travelledKilometers = 100;
+    }
+
+    public function tearDown(): void
+    {
+        \Mockery::close();
     }
 }

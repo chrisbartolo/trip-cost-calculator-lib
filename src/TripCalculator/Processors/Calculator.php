@@ -26,11 +26,8 @@ class Calculator
     public function generate()
     {
         $result = $this->geoService->getDirections($this->trip);
-        $this->trip->distanceKilometers = $result->routes[0]->summary->distance / 1000;
-        $this->trip->travelTimeMinutes = $result->routes[0]->summary->duration / 60;
-
-        echo "Distance: " . $this->trip->distanceKilometers . "km \n";
-        echo "Duration: " . $this->minutesFormat($this->trip->travelTimeMinutes, '%02d Hours, %02d Minutes') . " \n";
+        $this->trip->travelledKilometers = $this->geoService->getTravelledKilometers();
+        $this->trip->travelTimeMinutes = $this->geoService->getTravelTimeMinutes();
     }
 
     function minutesFormat($time, $format = '%02d:%02d')
@@ -45,11 +42,11 @@ class Calculator
 
     public function getDistance(): float
     {
-        if ($this->trip->distanceKilometers = 0) {
+        if ($this->trip->travelledKilometers = 0) {
             //TODO: Fetch distance from API
         }
 
-        return $this->trip->distanceKilometers;
+        return $this->trip->travelledKilometers;
     }
 
     public function getTravellingTime(): int
@@ -64,7 +61,7 @@ class Calculator
     public function calculateCost(): float
     {
         $driverCost = $this->calculateDriverCost($this->driver->hourlyRate, $this->trip->travelTimeMinutes);
-        $fuelCost = $this->calculateFuelCost($this->trip->fuelCostLitre, $this->trip->travelTimeMinutes, $this->vehicle->fuelLitrePerHundred);
+        $fuelCost = $this->calculateFuelCost($this->trip->fuelCostLitre, $this->trip->travelledKilometers, $this->vehicle->fuelLitrePerHundred);
         $vehicleWearTearCost = $this->calculateVehicleWearTearCost($this->vehicle->wearTearHourly, $this->trip->travelTimeMinutes);
 
         $totalCost = $driverCost + $fuelCost + $vehicleWearTearCost;

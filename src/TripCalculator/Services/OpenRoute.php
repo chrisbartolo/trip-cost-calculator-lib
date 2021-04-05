@@ -11,6 +11,9 @@ class OpenRoute implements GeoService
 {
     private \GuzzleHttp\Client $guzzleClient;
 
+    public int $travelledKilometers = 0;
+    public int $travelTimeMinutes = 0;
+
     public function __construct($apiKey = null)
     {
         $headers = [
@@ -37,7 +40,10 @@ class OpenRoute implements GeoService
             ['body' => json_encode($body)]
         );
 
-        return json_decode($request->getBody()->getContents());
+        $result = json_decode($request->getBody()->getContents());
+
+        $this->travelledKilometers = $result->routes[0]->summary->distance / 1000;
+        $this->travelTimeMinutes = $result->routes[0]->summary->duration / 60;
     }
 
     public function getCoordinatesFromAddress(string $address)
@@ -48,5 +54,15 @@ class OpenRoute implements GeoService
     public function getAddressFromCoordinates(Point $point)
     {
         // TODO: Implement getAddressFromCoordinates() method.
+    }
+
+    public function getTravelledKilometers()
+    {
+        return $this->travelledKilometers;
+    }
+
+    public function getTravelTimeMinutes()
+    {
+        return $this->travelTimeMinutes;
     }
 }

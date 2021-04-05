@@ -38,14 +38,29 @@ class TripCalculator
         return $result;
     }
 
-    public function setFuelCostLitre(Decimal $valueInEuro): void
+    public function getTrip()
     {
-        $this->trip->fuelCostLitre = $valueInEuro;
+        return $this->trip;
     }
 
-    public function setVehicleWearTearHourly(Decimal $valueInEuro): void
+    public function getVehicle()
     {
-        $this->vehicle->wearTearHourly = $valueInEuro;
+        return $this->vehicle;
+    }
+
+    public function getCalculator()
+    {
+        return $this->calculator;
+    }
+
+    public function getGeoService()
+    {
+        return $this->geoService;
+    }
+
+    public function getDriver()
+    {
+        return $this->driver;
     }
 
 }

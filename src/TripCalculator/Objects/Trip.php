@@ -14,7 +14,7 @@ class Trip {
     private array $points = [];
 
     public bool $calculated = false;
-    public float $distanceKilometers = 0;
+    public float $travelledKilometers = 0;
     public int $travelTimeMinutes = 0;
 
     public function addPoint(Point $point)

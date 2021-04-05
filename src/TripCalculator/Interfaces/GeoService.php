@@ -16,6 +16,8 @@ interface GeoService
 
     public function getAddressFromCoordinates(Point $point);
 
+    public function getTravelledKilometers();
 
+    public function getTravelTimeMinutes();
 
 }
