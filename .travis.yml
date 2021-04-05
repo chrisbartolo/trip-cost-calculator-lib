@@ -15,17 +15,17 @@ php:
 # Note: Code coverage requires php-xDebug extension enabled on CI server
 
 install:
-  - travis_retry composer install --no-interaction --no-suggest
+  - docker exec -it trip-cost-calculator travis_retry composer install --no-interaction --no-suggest
 
 # Testing the app (see phpunit.xml) for configs, generating Code Coverage report
 script:
-  - composer test -- --coverage-clover=coverage.xml
+  - docker exec -it trip-cost-calculator composer test -- --coverage-clover=coverage.xml
 
 #after_script:
 
 after_success:
   # Submit coverage report to https://codecov.io
-  - bash <(curl -s https://codecov.io/bash)
+  - docker exec -it trip-cost-calculator bash <(curl -s https://codecov.io/bash)
 
 #after_failure:
 
