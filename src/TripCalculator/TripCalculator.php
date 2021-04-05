@@ -1,24 +1,28 @@
 <?php
 
-
 namespace Trip\Calculator;
 
 
 use Decimal\Decimal;
+use Trip\Calculator\Interfaces\GeoService;
 use Trip\Calculator\Objects\Point;
 use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Vehicle;
-use Trip\Calculator\Processor\Calculator;
+use Trip\Calculator\Processors\Calculator;
+use Trip\Calculator\Services\GoogleMaps;
 
 class TripCalculator
 {
     private Trip $trip;
     private Vehicle $vehicle;
     private Calculator $calculator;
+    private GeoService $geoService;
 
-    public function __construct()
+    public function __construct(GeoService $geoService, Trip $trip, Vehicle $vehicle)
     {
-        $this->trip = new Trip();
+        $this->trip = $trip;
+        $this->geoService = $geoService;
+        $this->vehicle = $vehicle;
     }
 
     public function addTripPoint(Point $point)
@@ -28,9 +32,9 @@ class TripCalculator
 
     public function calculateTrip()
     {
-        $this->calculator = new Calculator($this->trip, $this->vehicle);
+        $this->calculator = new Calculator($this->geoService, $this->trip, $this->vehicle);
         $this->calculator->generate();
-        return $this->calculator->calculateCost();
+        //return $this->calculator->calculateCost();
     }
 
     public function setDriverHourly(Decimal $valueInEuro): void

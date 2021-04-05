@@ -3,6 +3,7 @@
 namespace Trip\Calculator\Objects;
 
 use Decimal\Decimal;
+use Trip\Calculator\Objects\Point;
 
 class Trip {
 
@@ -27,6 +28,20 @@ class Trip {
         $this->points = [];
     }
 
+    public function getPoints(): array
+    {
+        return $this->points;
+    }
 
+    public function getPointsAsCoordinates(): array
+    {
+        $coordinates = [];
+        foreach($this->points as $point) {
+            /* @var $point \Trip\Calculator\Objects\Point */
+            $coordinates[] = [$point->latitude, $point->longitude];
+        }
+
+        return $coordinates;
+    }
 
 }

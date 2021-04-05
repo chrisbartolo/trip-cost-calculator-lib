@@ -1,28 +1,30 @@
 <?php
 
-namespace Trip\Calculator\Processor;
+namespace Trip\Calculator\Processors;
 
 use Decimal\Decimal;
+use Trip\Calculator\Interfaces\GeoService;
 use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Vehicle;
 
 class Calculator
 {
+    private GeoService $geoService;
     private Trip $trip;
     private Vehicle $vehicle;
 
-    public function __construct(Trip $trip, Vehicle $vehicle)
+    public function __construct(GeoService $geoService, Trip $trip, Vehicle $vehicle)
     {
+        $this->geoService = $geoService;
         $this->trip = $trip;
         $this->vehicle = $vehicle;
     }
 
     public function generate()
     {
-        $result = [];
-        //TODO: call generate API
-        $this->trip->distance = $result['distance'];
-        $this->trip->travelTimeMinutes = $result['eta'];
+        $result = $this->geoService->getDirections($this->trip);
+        $this->trip->distanceKilometers = $result->routes[0]->summary->distance;
+        $this->trip->travelTimeMinutes = $result->routes[0]->summary->duration;
     }
 
     public function getDistance(): float
