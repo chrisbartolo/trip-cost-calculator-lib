@@ -7,7 +7,7 @@ use Trip\Tests\ProcessorsTest\CalculatorTest;
 
 final class TripCalculatorTest extends SetupAbstract
 {
-    public function testDependencyInjection()
+    public function testCalculateTrip()
     {
         $calculatorTest = new CalculatorTest();
         $calculatorTest->setInitialValues();

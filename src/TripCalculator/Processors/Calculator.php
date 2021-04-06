@@ -8,6 +8,10 @@ use Trip\Calculator\Objects\Driver;
 use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Vehicle;
 
+/**
+ * Trip calculator functions
+ * @package Trip\Calculator\Processors
+ */
 class Calculator
 {
     private GeoService $geoService;
@@ -23,6 +27,7 @@ class Calculator
         $this->driver = $driver;
     }
 
+
     public function generate()
     {
         $result = $this->geoService->getDirections($this->trip);
@@ -30,7 +35,7 @@ class Calculator
         $this->trip->travelTimeMinutes = $this->geoService->getTravelTimeMinutes();
     }
 
-    function minutesFormat($time, $format = '%02d:%02d')
+    public function minutesFormat($time, $format = '%02d:%02d')
     {
         if ($time < 1) {
             return;

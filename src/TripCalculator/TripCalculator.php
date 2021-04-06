@@ -9,6 +9,10 @@ use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Vehicle;
 use Trip\Calculator\Processors\Calculator;
 
+/**
+ * The entrypoint to the functions provided by this library.
+ * @package Trip\Calculator
+ */
 class TripCalculator
 {
     private Trip $trip;
@@ -25,6 +29,10 @@ class TripCalculator
         $this->driver = $driver;
     }
 
+    /**
+     * Calculate the total cost of the trip, based on multiple parameters
+     * @return float value in euro
+     */
     public function calculateTrip()
     {
         $this->calculator = new Calculator($this->geoService, $this->trip, $this->vehicle, $this->driver);

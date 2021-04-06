@@ -35,7 +35,7 @@ class Trip
         $coordinates = [];
         foreach ($this->points as $point) {
             /* @var $point Point */
-            $coordinates[] = [$point->latitude, $point->longitude];
+            $coordinates[] = [$point->longitude, $point->latitude];
         }
 
         return $coordinates;

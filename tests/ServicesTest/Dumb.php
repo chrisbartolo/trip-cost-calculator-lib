@@ -13,28 +13,33 @@ class Dumb implements GeoService
     {
     }
 
-    public function getDirections(Trip $trip)
+    public function getDirections(): array
     {
-        // TODO: Implement getDirections() method.
+        return array();
     }
 
-    public function getCoordinatesFromAddress(string $address)
+    public function getCoordinatesFromAddress(string $address): Point
     {
         // TODO: Implement getCoordinatesFromAddress() method.
     }
 
-    public function getAddressFromCoordinates(Point $point)
+    public function getAddressFromCoordinates(Point $point): string
     {
         // TODO: Implement getAddressFromCoordinates() method.
     }
 
-    public function getTravelledKilometers()
+    public function getTravelledKilometers(): int
     {
         return 100;
     }
 
-    public function getTravelTimeMinutes()
+    public function getTravelTimeMinutes(): int
     {
         return 60;
+    }
+
+    public function fetchDirectionsFromApi(Trip $trip): void
+    {
+        // TODO: Implement fetchDirectionsFromApi() method.
     }
 }
