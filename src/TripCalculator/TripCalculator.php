@@ -61,6 +61,11 @@ class TripCalculator
         return $this->geoService;
     }
 
+    public function setGeoService(GeoService $geoService)
+    {
+        $this->geoService = $geoService;
+    }
+
     public function getDriver()
     {
         return $this->driver;

@@ -20,6 +20,11 @@ class Trip
         $this->points[] = $point;
     }
 
+    public function addPointFromCoordArray(Array $array)
+    {
+        $this->points[] = new Point($array[0], $array[1]);
+    }
+
     public function clearPoints()
     {
         $this->points = [];

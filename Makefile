@@ -8,6 +8,7 @@ test:
 	docker run -it trip-cost-calculator
 
 test-local:
+	composer dump
 	./vendor/bin/phpunit tests --testdox
 
 codecov-local:

@@ -30,7 +30,7 @@ class Calculator
 
     public function generate()
     {
-        $result = $this->geoService->getDirections($this->trip);
+        $this->geoService->fetchDirectionsFromApi($this->trip);
         $this->trip->travelledKilometers = $this->geoService->getTravelledKilometers();
         $this->trip->travelTimeMinutes = $this->geoService->getTravelTimeMinutes();
     }

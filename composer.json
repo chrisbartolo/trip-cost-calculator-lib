@@ -38,15 +38,6 @@
       "tests/"
     ]
   },
-  "autoload": {
-    "psr-4": {
-      "Trip\\Calculator\\": "src/TripCalculator"
-    },
-    "classmap": [
-      "src/",
-      "tests/"
-    ]
-  },
   "autoload-dev": {
     "psr-4": {
       "Trip\\Tests\\": "tests/"
