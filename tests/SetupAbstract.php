@@ -11,7 +11,6 @@ use Trip\Calculator\Objects\Point;
 use Trip\Calculator\Objects\Trip;
 use Trip\Calculator\Objects\Vehicle;
 use Trip\Calculator\Processors\Calculator;
-use Trip\Calculator\Services\OpenRoute;
 use Trip\Calculator\TripCalculator;
 use Trip\Tests\ServicesTest\Dumb;
 
